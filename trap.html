@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚨 TRAP DETECTED</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        body {
+            background-color: #000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: #0a0a0a;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            border: 2px solid #ff4444;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.3);
+        }
+        h1 {
+            color: #ff4444;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 10px #ff0000;
+        }
+        .trap-icon {
+            text-align: center;
+            font-size: 5rem;
+            margin: 20px 0;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .message {
+            background: #111;
+            border-left: 5px solid #ff4444;
+            padding: 20px;
+            margin: 30px 0;
+            color: #0f0;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        .message p {
+            margin-bottom: 15px;
+        }
+        .highlight {
+            color: #ff4444;
+            font-weight: bold;
+        }
+        .keylogger-info {
+            background: #000;
+            border: 1px solid #00ff00;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            color: #0f0;
+        }
+        .keylogger-info h3 {
+            color: #00ff00;
+            margin-bottom: 10px;
+        }
+        .keylogger-info ul {
+            margin-left: 20px;
+            color: #0f0;
+        }
+        .keylogger-info li {
+            margin-bottom: 8px;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            margin-top: 30px;
+            transition: 0.3s;
+        }
+        .button:hover {
+            background: #00ff00;
+            color: #000;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="trap-icon">🚨🚨🚨</div>
+        <h1>YOU'VE BEEN TRAPPED!</h1>
+        
+        <div class="message">
+            <p>This was <span class="highlight">NOT</span> a real login page.</p>
+            <p>It's a demonstration of how hackers can capture your keystrokes using a <span class="highlight">JavaScript keylogger</span>.</p>
+            <p>Everything you typed in the text box (and anywhere else on the page) was recorded and sent to the attacker's email.</p>
+        </div>
+
+        <div class="keylogger-info">
+            <h3>⚡ HOW IT WORKED</h3>
+            <ul>
+                <li>Every keystroke on this page was captured by JavaScript</li>
+                <li>Keystrokes were batched and sent to Formspree every 20 seconds</li>
+                <li>Formspree automatically emailed the data to the attacker</li>
+                <li>When you submitted, the full text was sent immediately</li>
+                <li>No Python keylogger needed – all client‑side!</li>
+            </ul>
+            <p style="margin-top: 15px; color: #ff4444;"><strong>This is exactly how real attackers can steal your data with just a malicious webpage.</strong></p>
+        </div>
+
+        <a href="index.html" class="button">← TRY AGAIN (if you dare)</a>
+
+        <div class="footer">
+            Educational purpose • Ethical Hacking Lab • Never use without permission
+        </div>
+    </div>
+</body>
+</html>
